@@ -2,12 +2,14 @@ package com.hwhueng.activiti.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.hwhueng.activiti.exception.BusinessException;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Model;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 
@@ -44,5 +46,14 @@ public class BpmModelService {
         }
         repositoryService.addModelEditorSource(modelData.getId(), bytes);
         return modelData;
+    }
+
+    @Transactional
+    public String deleteModel(String modelId){
+        if(StringUtils.isEmpty(modelId)){
+            throw new BusinessException("模型Id为空");
+        }
+        repositoryService.deleteModel(modelId);
+        return "删除模型成功";
     }
 }
