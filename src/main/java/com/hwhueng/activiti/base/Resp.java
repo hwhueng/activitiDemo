@@ -4,9 +4,6 @@ package com.hwhueng.activiti.base;
 import cn.hutool.core.util.ObjectUtil;
 import com.hwhueng.activiti.domain.Msg;
 import com.hwhueng.activiti.enums.EnumStatus;
-import org.apache.commons.lang3.ObjectUtils;
-import org.thymeleaf.util.StringUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 

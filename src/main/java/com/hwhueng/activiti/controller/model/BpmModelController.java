@@ -1,16 +1,14 @@
 package com.hwhueng.activiti.controller.model;
 
-import cn.hutool.core.collection.CollectionUtil;
 import com.hwhueng.activiti.base.Resp;
 import com.hwhueng.activiti.exception.BusinessException;
-import com.hwhueng.activiti.service.BpmModelService;
+import com.hwhueng.activiti.service.imp.BpmModelService;
+import com.hwhueng.activiti.vo.DeployModelVo;
 import org.activiti.engine.repository.Model;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,11 +38,17 @@ public class BpmModelController {
         return new Resp<>();
     }
 
-    @RequestMapping("delete")
+    @RequestMapping("/delete/{modelId}")
     @ResponseBody
-    public Resp<String> deleteModel(HttpServletRequest request) throws BusinessException{
-        bpmModelService.deleteModel(request.getParameter("modelId"));
+    public Resp<String> deleteModel(@PathVariable String modelId) throws BusinessException{
+        bpmModelService.deleteModel(modelId);
         return new Resp<>();
+    }
+
+    @RequestMapping("/deploy")
+    @ResponseBody
+    public Resp<String> deploy(@RequestBody DeployModelVo vo){
+        return bpmModelService.deployModel(vo);
     }
 
 }

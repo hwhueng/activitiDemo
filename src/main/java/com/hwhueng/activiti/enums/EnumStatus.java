@@ -11,7 +11,7 @@ public enum EnumStatus {
 
     private final int code;
 
-    private EnumStatus(int code){
+    EnumStatus(int code){
         this.code = code;
     }
 

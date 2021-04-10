@@ -2,8 +2,11 @@ package com.hwhueng.activiti;
 
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.redisson.spring.starter.RedissonAutoConfiguration;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication(exclude = {org.activiti.spring.boot.SecurityAutoConfiguration.class,
 org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
 })
+@EnableCaching
+@ImportAutoConfiguration(RedissonAutoConfiguration.class)
 public class Application {
     public static void main(String [] args){
         SpringApplication.run(Application.class, args);

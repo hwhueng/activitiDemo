@@ -19,9 +19,24 @@ spring:
   activiti:
     check-process-definitions: false
     database-schema-update: true
+  cache:
+    type: redis
   redis:
-    host: 127.0.0.1
-    port: 6379
+#    database: 0
+#    host: localhost
+#    port: 6379
+#    password: abc.54321
+#    client-type: lettuce
+#    timeout: 60000
+    redisson:
+      file: classpath:redisson.yaml
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    virtual-host: /
+    username: guest
+    password: guest
+
 
 
 mybatis-plus:
@@ -29,6 +44,8 @@ mybatis-plus:
   typeAliasesPackage: com.hrabbit.admin.modual.system.bean
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    table-underline: true
+    map-underscore-to-camel-case: false
 
 thymeleaf:
   mode: LEGACYHTML5
