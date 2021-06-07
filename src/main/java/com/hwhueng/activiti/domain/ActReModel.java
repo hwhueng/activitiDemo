@@ -2,6 +2,7 @@ package com.hwhueng.activiti.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
@@ -16,16 +17,15 @@ public class ActReModel {
     @TableField("NAME_")
     private String name;
 
-    @TableField("KEY_")
-    private String key;
-
     @TableField("CATEGORY_")
     private String category;
 
     @TableField("CREATE_TIME_")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     @TableField("LAST_UPDATE_TIME_")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdateTime;
 
     @TableField("VERSION_")
@@ -42,6 +42,7 @@ public class ActReModel {
 
     @TableField("TENANT_ID_")
     private String tenantId;
+
 
     public String getmId() {
         return mId;
@@ -65,14 +66,6 @@ public class ActReModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public String getCategory() {

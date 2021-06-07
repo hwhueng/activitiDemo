@@ -369,26 +369,23 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
         var svgDOM = DataManager.serialize(svgClone);
 
         var params = {
-            json_xml: json,
-            svg_xml: svgDOM,
+            modelId: modelMetaData.modelId,
+            jsonXml: json,
+            svgXml: svgDOM,
             name: $scope.saveDialog.name,
             description: $scope.saveDialog.description
         };
 
         // Update
-        $http({    method: 'PUT',
+        $http({    method: 'POST',
             data: params,
             ignoreErrors: true,
             headers: {'Accept': 'application/json',
-                      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                      'Content-Type': 'application/json; charset=UTF-8'},
             transformRequest: function (obj) {
-                var str = [];
-                for (var p in obj) {
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                }
-                return str.join("&");
+                return JSON.stringify(obj);
             },
-            url: KISBPM.URL.putModel(modelMetaData.modelId)})
+            url: KISBPM.URL.putModel()})
 
             .success(function (data, status, headers, config) {
                 $scope.editor.handleEvents({
@@ -401,6 +398,7 @@ var SaveModelCtrl = [ '$rootScope', '$scope', '$http', '$route', '$location',
                 $scope.$hide();
 
                 // Fire event to all who is listening
+                console.log("-- save param:" + params.name + " des:" + params.description);
                 var saveEvent = {
                     type: KISBPM.eventBus.EVENT_TYPE_MODEL_SAVED,
                     model: params,

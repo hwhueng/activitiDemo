@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -18,25 +19,8 @@ import java.io.IOException;
 @Service
 @RequestMapping("/model")
 public class BpmModelController {
-    @Autowired
+    @Resource
     BpmModelService bpmModelService;
-
-    @RequestMapping("createModel")
-    @ResponseBody
-    public Resp<String> createModel(HttpServletRequest request, HttpServletResponse response){
-        Model model = bpmModelService.createModel();
-        if(model != null && StringUtils.isNotEmpty(model.getId())){
-            try {
-                request.setAttribute("modelId", model.getId());
-                response.sendRedirect(request.getContextPath() + "/modeler.html?modelId=" + model.getId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else{
-            return  new Resp<>();
-        }
-        return new Resp<>();
-    }
 
     @RequestMapping("/delete/{modelId}")
     @ResponseBody

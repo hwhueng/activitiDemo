@@ -12,11 +12,11 @@
  */
 package com.hwhueng.activiti.controller.model;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hwhueng.activiti.base.Resp;
+import com.hwhueng.activiti.exception.BusinessException;
+import com.hwhueng.activiti.request.ModelRequest;
 import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RepositoryService;
@@ -26,13 +26,15 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.MultiValueMap;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import javax.annotation.Resource;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Tijs Rademakers
@@ -42,10 +44,10 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
   
   protected static final Logger LOGGER = LoggerFactory.getLogger(ModelSaveRestResource.class);
 
-  @Autowired
+  @Resource
   private RepositoryService repositoryService;
   
-  @Autowired
+  @Resource
   private ObjectMapper objectMapper;
 
   @RequestMapping(value="/model/test")
@@ -54,26 +56,25 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
     return new Resp<>("Hello");
   }
 
-  @RequestMapping(value="/model/{modelId}/save", method = RequestMethod.PUT)
+  @RequestMapping(value="/model/save", method = RequestMethod.POST)
   @ResponseStatus(value = HttpStatus.OK)
-  public void saveModel(@PathVariable String modelId, @RequestParam("name") String name,
-                        @RequestParam("json_xml") String json_xml, @RequestParam("svg_xml") String svg_xml,
-                        @RequestParam("description") String description) {
+  @Transactional(rollbackFor = Exception.class)
+  public Resp<String> saveModel(@RequestBody ModelRequest request) {
     try {
-      Model model = repositoryService.getModel(modelId);
+      Model model = repositoryService.getModel(request.getModelId());
       
       ObjectNode modelJson = (ObjectNode) objectMapper.readTree(model.getMetaInfo());
       
-      modelJson.put(MODEL_NAME, name);
-      modelJson.put(MODEL_DESCRIPTION, description);
+      modelJson.put(MODEL_NAME, request.getName());
+      modelJson.put(MODEL_DESCRIPTION, request.getDescription());
       model.setMetaInfo(modelJson.toString());
-      model.setName(name);
+      model.setName(request.getName());
       
       repositoryService.saveModel(model);
       
-      repositoryService.addModelEditorSource(model.getId(), json_xml.getBytes("utf-8"));
+      repositoryService.addModelEditorSource(model.getId(), request.getJsonXml().getBytes(StandardCharsets.UTF_8));
       
-      InputStream svgStream = new ByteArrayInputStream(svg_xml.getBytes("utf-8"));
+      InputStream svgStream = new ByteArrayInputStream(request.getSvgXml().getBytes(StandardCharsets.UTF_8));
       TranscoderInput input = new TranscoderInput(svgStream);
       
       PNGTranscoder transcoder = new PNGTranscoder();
@@ -89,7 +90,8 @@ public class ModelSaveRestResource implements ModelDataJsonConstants {
       
     } catch (Exception e) {
       LOGGER.error("Error saving model", e);
-      throw new ActivitiException("Error saving model", e);
+      throw new BusinessException("Error saving model", e);
     }
+    return new Resp<>();
   }
 }

@@ -1,5 +1,6 @@
 package com.hwhueng.activiti.service.imp;
 
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hwhueng.activiti.constrant.CacheNames;
@@ -7,7 +8,6 @@ import com.hwhueng.activiti.domain.AuthUser;
 import com.hwhueng.activiti.mapper.AuthUserMapper;
 import com.hwhueng.activiti.service.IAuthUserService;
 import com.hwhueng.activiti.vo.EmpInfoVo;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class AuthUserService extends ServiceImpl<AuthUserMapper, AuthUser> implements IAuthUserService {
 
-    @Cacheable(value = CacheNames.empInfo, key="#empId")
+    @Cached(name = CacheNames.empInfo, key="#empId", expire = 3600)
     public AuthUser getByEmpId(String empId){
         LambdaQueryWrapper<AuthUser> qwr = new LambdaQueryWrapper<>();
         AuthUser user = getOne(qwr.eq(AuthUser::getEmpid, empId));

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -28,38 +29,9 @@ import java.nio.charset.StandardCharsets;
 public class BpmModelService implements IBpmModelService {
     private final static Logger log = LoggerFactory.getLogger(BpmModelService.class);
 
-    @Autowired
+    @Resource
     RepositoryService repositoryService;
 
-    public Model createModel(){
-        String name = "name";
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode editorNode = objectMapper.createObjectNode();
-        editorNode.put("id", "canvas");
-        editorNode.put("resourceId", "canvas");
-        ObjectNode stencilSetNode = objectMapper.createObjectNode();
-        stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");
-        editorNode.put("stencilset", stencilSetNode);
-        Model modelData = repositoryService.newModel();
-
-        ObjectNode modelObjectNode = objectMapper.createObjectNode();
-        modelObjectNode.put(ModelDataJsonConstants.MODEL_NAME, name);
-        modelObjectNode.put(ModelDataJsonConstants.MODEL_REVISION, 1);
-        modelObjectNode.put(ModelDataJsonConstants.MODEL_DESCRIPTION, "description");
-        modelData.setMetaInfo(modelObjectNode.toString());
-        modelData.setName(name);
-        modelData.setKey(StringUtils.defaultString("key"));
-
-        repositoryService.saveModel(modelData);
-        byte [] bytes = new byte[0];
-        try{
-            bytes = editorNode.toString().getBytes("utf-8");
-        }catch (UnsupportedEncodingException e){
-            System.out.println(e.getMessage());
-        }
-        repositoryService.addModelEditorSource(modelData.getId(), bytes);
-        return modelData;
-    }
 
     @Transactional
     public String deleteModel(String modelId){

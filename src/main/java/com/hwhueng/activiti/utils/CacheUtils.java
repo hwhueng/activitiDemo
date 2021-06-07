@@ -1,16 +1,14 @@
 package com.hwhueng.activiti.utils;
 
-import cn.hutool.extra.spring.SpringUtil;
+import com.alicp.jetcache.Cache;
+import com.alicp.jetcache.anno.support.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.stereotype.Component;
 
 /**
  * 缓存工具类（j2cache）
  */
-@Component
+// @Component
 public class CacheUtils {
     private static CacheManager cacheManager;
 
@@ -30,7 +28,7 @@ public class CacheUtils {
      */
     public static void set(String region, String key, Object val) {
         if (null == val) {
-            getCache(region).evict(key);
+            getCache(region).remove(key);
         } else {
             getCache(region).put(key, val);
         }
@@ -43,12 +41,12 @@ public class CacheUtils {
      * @param key    例如:projectName         当缓存是以spring注解@Cachable创建的时,一般key都是以冒号开头 例如periodOpenList缓存中的 :K3_anHui
      */
     public static <T> T get(String region, String key) {
-        Cache.ValueWrapper valueWrapper = getCache(region).get(key);
-        if (null == valueWrapper) {
+        Object value = getCache(region).get(key);
+        if (null == value) {
             return null;
         }
         //noinspection unchecked
-        return (T) valueWrapper;
+        return (T) value;
     }
 
     /**
@@ -57,7 +55,7 @@ public class CacheUtils {
      * @param region 例如:param
      */
     public static void clear(String region) {
-        getCache(region).clear();
+        Cache cache = getCache(region);
     }
 
     /**
@@ -69,7 +67,7 @@ public class CacheUtils {
     public static void evict(String region, String...keys) {
         Cache cache = getCache(region);
         for (String key : keys) {
-            cache.evict(key);
+            cache.remove(key);
         }
     }
 }

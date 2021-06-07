@@ -19,8 +19,7 @@ spring:
   activiti:
     check-process-definitions: false
     database-schema-update: true
-  cache:
-    type: redis
+    async-executor-activate: false
   redis:
 #    database: 0
 #    host: localhost
@@ -37,6 +36,22 @@ spring:
     username: guest
     password: guest
 
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+      limit: 100
+  remote:
+    default:
+      type: redis.lettuce
+      keyConvertor: fastjson
+      valueEncoder: java
+      valueDecoder: java
+      uri: redis://abc.54321@localhost:6379/11
+      password: abc.54321
 
 
 mybatis-plus:

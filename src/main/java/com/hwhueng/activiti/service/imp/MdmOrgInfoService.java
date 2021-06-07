@@ -1,5 +1,6 @@
 package com.hwhueng.activiti.service.imp;
 
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -9,7 +10,6 @@ import com.hwhueng.activiti.mapper.MdmOrgInfoMapper;
 import com.hwhueng.activiti.service.IMdmOrgInfoService;
 import com.hwhueng.activiti.vo.OrgTreeVo;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -26,7 +26,7 @@ public class MdmOrgInfoService extends ServiceImpl<MdmOrgInfoMapper, MdmOrgInfo>
     }
 
 
-    @Cacheable(value = CacheNames.orgTree, key = "methodName")
+    @Cached(name = CacheNames.orgTree, key = "method.name")
     public List<OrgTreeVo> getOrgTreeVo(){
         Map<String, List<OrgTreeVo>> orgTreeMap = Maps.newHashMap();
         List<MdmOrgInfo> allOrg = getAllOrgInfo();
