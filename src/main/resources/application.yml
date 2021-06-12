@@ -1,5 +1,5 @@
 server:
-  port: 18082
+  port: 8080
 
 spring:
   datasource:
@@ -7,7 +7,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/activiti?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
-    password: anta.2345
+    password: abcd54321
     hikari:
       minimum-idle: 10
       maximum-pool-size: 20
@@ -35,6 +35,15 @@ spring:
     virtual-host: /
     username: guest
     password: guest
+  flyway:
+    enabled: true
+    baseline-version: 1
+    baseline-on-migrate: true
+
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
 
 jetcache:
   statIntervalMinutes: 15
@@ -50,7 +59,7 @@ jetcache:
       keyConvertor: fastjson
       valueEncoder: java
       valueDecoder: java
-      uri: redis://abc.54321@localhost:6379/11
+      uri: redis://localhost:6379/11
       password: abc.54321
 
 

@@ -3,7 +3,7 @@ package com.hwhueng.activiti.model;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.google.common.collect.Lists;
-import com.hwhueng.activiti.constrant.CacheNames;
+import com.hwhueng.activiti.constant.CacheNames;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
 

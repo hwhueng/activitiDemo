@@ -1,58 +1,53 @@
 package com.hwhueng.activiti.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 
 import java.io.Serializable;
 import java.util.Date;
 
+@ApiModel(value = "task vo")
 public class TodoTaskVo implements Serializable {
     private static final long serialVersionUID = -6894957514855981989L;
-    /**
-     * 流程实例ID
-     */
+
+    @ApiModelProperty(value = "process instance id")
     private String processInstanceId;
-    /**
-     * 流程定义ID
-     */
+
+    @ApiModelProperty(value = "process define id")
     private String procDefId;
-    /**
-     * 任务名称
-     */
+
+    @ApiModelProperty(value = "task name")
     private String taskName;
-    /**
-     * 流程节点
-     */
+
+    @ApiModelProperty(value = "task define key")
     private String taskDefKey;
-    /**
-     * 任务办理人
-     */
+
+    @ApiModelProperty(value = "assignee")
     private String assignee;
-    /**
-     * 任务所有人
-     */
+
+    @ApiModelProperty(value = "task owner")
     private String owner;
-    /**
-     * 创建时间
-     */
+
+    @ApiModelProperty(value = "create time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-    /**
-     * 流程定义key
-     */
+    @ApiModelProperty(value = "process define key")
     private String processDefKey;
 
-    /**
-     * 流程定义名称
-     */
+    @ApiModelProperty(value = "process define name")
     private String processDefName;
-    // 任务ID
+
+    @ApiModelProperty(value = "task id")
     private String taskId;
 
+    @ApiModelProperty(value = "start time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
+    @ApiModelProperty(value = "end time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 

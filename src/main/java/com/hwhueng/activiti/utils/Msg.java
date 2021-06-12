@@ -1,4 +1,4 @@
-package com.hwhueng.activiti.domain;
+package com.hwhueng.activiti.utils;
 
 public class Msg {
     private final String code;

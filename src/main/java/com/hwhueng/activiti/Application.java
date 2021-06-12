@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 
 @Configuration
-@ComponentScan
 @MapperScan("com.hwhueng.activiti.mapper")
 @EnableMethodCache(basePackages = "com.hwhueng.activiti")
 @EnableCreateCacheAnnotation

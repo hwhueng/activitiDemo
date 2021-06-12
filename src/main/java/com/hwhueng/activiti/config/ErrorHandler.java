@@ -1,19 +1,14 @@
 package com.hwhueng.activiti.config;
 
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.serialize.JSONSerializer;
 import com.hwhueng.activiti.base.Resp;
-import com.hwhueng.activiti.domain.Msg;
 import com.hwhueng.activiti.enums.EnumStatus;
 import com.hwhueng.activiti.exception.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestControllerAdvice
 public class ErrorHandler {
