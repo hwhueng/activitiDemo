@@ -3,6 +3,7 @@ package com.hwhueng.activiti.controller;
 import com.hwhueng.activiti.base.Resp;
 import com.hwhueng.activiti.query.FlowTaskQuery;
 import com.hwhueng.activiti.request.FlowRequest;
+import com.hwhueng.activiti.request.TaskRequest;
 import com.hwhueng.activiti.service.IFlowService;
 import com.hwhueng.activiti.vo.TodoTaskVo;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,4 +31,15 @@ public class FlowController {
         return new Resp<>(flowService.getTodoList(query));
     }
 
+    @PostMapping("/taskJump")
+    public Resp<String> taskJump(@RequestBody TaskRequest request){
+        flowService.taskJump(request);
+        return new Resp<>();
+    }
+
+    @PostMapping("/taskApprove")
+    public Resp<String> taskApprove(@RequestBody TaskRequest request){
+        flowService.taskApprove(request);
+        return new Resp<>();
+    }
 }
